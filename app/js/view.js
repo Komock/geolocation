@@ -24,53 +24,87 @@ module.exports = {
 				'<div class="form__wrap">' +
 					'<h4 class="form__title">Ваш отзыв</h4>' +
 					'<form class="form balloon__form">' +
-						'<input class="form__user" type="text" placeholder="Ваше имя">' +
-						'<input class="form__place" type="text" placeholder="Укажите место">' +
-						'<textarea class="form__description" placeholder="Поделитесь впечатлениями" rows="5"></textarea>' +
-						'<div class="submit__wrap"><input type="submit" data-input="submit" value="Добавить"></div>' +
+						'<input class="form__user" type="text" placeholder="Ваше имя" tabindex="1">' +
+						'<input class="form__place" type="text" placeholder="Укажите место" tabindex="2">' +
+						'<textarea class="form__description" placeholder="Поделитесь впечатлениями" rows="5" tabindex="3"></textarea>' +
+						'<div class="submit__wrap"><input type="submit" data-input="submit" value="Добавить" tabindex="4"></div>' +
 						'<div class="form__msg">Заполнены не все поля!</div>' +
 					'</form>' +
 				'</div>' +
 			'</div>'
 		);
 	},
-	buildPins: function(data, yaMap) {
+	buildPins: function(data, collection) {
 		let that = this;
+		console.log('buildPins');
+		console.log(data);
 		data.forEach(function(pinData){
-			let pin = yaMap.geoObjects.add(new ymaps.Placemark([pinData.lng, pinData.lat], {
-					balloonAddr: pinData.addr,
-					id: pinData.id
+			collection.add(new ymaps.Placemark([pinData.lng, pinData.lat], {
+					addr: pinData.addr,
+					lng: pinData.lng,
+					lat: pinData.lat,
+					id: pinData.id,
+					comment: {
+						user: pinData.comment.user,
+						place: pinData.comment.place,
+						description: pinData.comment.description,
+						date: pinData.comment.date
+					}
 				}, {
-					balloonLayout: that.balloonLayout(),
-					balloonContentLayout: that.balloonContentLayout()
+					preset: 'twirl#lightblueIcon'
 				}
 			));
 		});
 	},
-	balloonOpen: function(yaMap, lng, lat, addr, id) {
-		console.log('open ballon with id ' + id);
+	balloonOpen: function(yaMap, pinsData, lng, lat, addr) {
+		console.log('open balloon');
+		console.log(lng, lat, addr);
+		console.log(pinsData);
 		yaMap.balloon.open([lng, lat], {
 			balloonAddr: addr,
-			balloonComments: this.getComments(id),
-			id: id
+			balloonComments: this.getComments(pinsData, addr)
 		}, {
 			layout: this.balloonLayout(),
 			contentLayout: this.balloonContentLayout()
 		});
 	},
-	getComments: function(id) {
-		if (sessionStorage.getItem('comments') && id) {
-			let comments = JSON.parse( sessionStorage.getItem('comments') );
-			let templ = Handlebars.compile(commentTempl);
-			return templ(comments[id]);
-		} else {
+	getComments: function(pinsData, addr) {
+		console.log('pinsData', pinsData);
+		if ( pinsData !== [] ) {
+			// console.log(pinsData[id]);
+			let pinComments = [];
+			pinsData.forEach(function(item){
+				if (item.addr === addr) {
+					pinComments.push(item.comment);
+				}
+			});
+			// If comments exist, return comments layout
+			if (pinComments.length > 0) {
+				console.log('comments exist');
+				let templ = Handlebars.compile(commentTempl);
+				return templ(pinComments);
+			}
 			return 'Отзывов пока нет';
 		}
+		return 'Отзывов пока нет';
 	},
-	addPin: function(yaMap, lng, lat, addr, id){
+	addPin: function(collection, lng, lat, addr, id, user, place, description, date){
 		console.log('addPin');
-		yaMap.geoObjects.add(new ymaps.Placemark([lng, lat], {
-			id: id
-		}));
+		console.log(lng, lat, addr, id, user, place, description, date);
+		collection.add(new ymaps.Placemark([lng, lat], {
+				addr: addr,
+				lng: lng,
+				lat: lat,
+				id: id,
+				comment: {
+					user: user,
+					place: place,
+					description: description,
+					date: date
+				}
+			}, {
+    			preset: 'twirl#lightblueIcon'
+			}
+		));
 	}
 };

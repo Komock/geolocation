@@ -40,11 +40,22 @@ html, body {
     }
     &__title {
         margin: 0;
-        padding: 10px 30px;
+        padding: 10px 30px 10px 35px;
         background: #ff8663;
         color: #fff;
         font-size: 13px;
         font-weight: normal;
+        &:before {
+            position: absolute;
+            left: 12px;
+            top: 10px;
+            content: '';
+            display: block;
+            width: 12px;
+            height: 17px;
+            background: url(../img/icon-pin.png) no-repeat center center; 
+            background-size: 12px 17px;
+        }
     }
     &__close {
         position: absolute;
@@ -74,7 +85,7 @@ html, body {
         }
     }
     &__comments {
-        padding: 10px 0;
+        margin: 10px 0;
         height: 120px;
         overflow: scroll;
     }
@@ -116,6 +127,7 @@ html, body {
             font-size: inherit;
             &:focus {
                 outline: none;
+                border-color: #333;
             }
         }
         input:first-child {
@@ -138,6 +150,10 @@ html, body {
                 background: #444;
                 border: 1px solid #444;
             }
+            &:focus {
+                outline: none;
+                border-color: darken(#ff8663, 30%);
+            }
         }
         .submit__wrap {
             overflow: hidden;
@@ -155,4 +171,18 @@ html, body {
 }
 .description {
     margin: 4px 0 14px;
+}
+
+.cluster-balloon {
+    text-align: center;
+    a.show-balloon {
+        display: block;
+        margin-bottom: 8px;
+    }
+    p {
+        margin-top: 0;
+    }
+    &__date {
+        color: #999;
+    }
 }

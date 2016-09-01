@@ -39,11 +39,21 @@ html, body {
     box-sizing: border-box; }
   .balloon__title {
     margin: 0;
-    padding: 10px 30px;
+    padding: 10px 30px 10px 35px;
     background: #ff8663;
     color: #fff;
     font-size: 13px;
     font-weight: normal; }
+    .balloon__title:before {
+      position: absolute;
+      left: 12px;
+      top: 10px;
+      content: '';
+      display: block;
+      width: 12px;
+      height: 17px;
+      background: url(../img/icon-pin.png) no-repeat center center;
+      background-size: 12px 17px; }
   .balloon__close {
     position: absolute;
     right: 10px;
@@ -69,7 +79,7 @@ html, body {
       height: 100%;
       width: 2px; }
   .balloon__comments {
-    padding: 10px 0;
+    margin: 10px 0;
     height: 120px;
     overflow: scroll; }
   .balloon__content {
@@ -103,7 +113,8 @@ html, body {
     margin-top: 10px;
     font-size: inherit; }
     .balloon .form input:focus, .balloon .form textarea:focus {
-      outline: none; }
+      outline: none;
+      border-color: #333; }
   .balloon .form input:first-child {
     margin-top: 0; }
   .balloon .form textarea {
@@ -121,6 +132,9 @@ html, body {
       cursor: pointer;
       background: #444;
       border: 1px solid #444; }
+    .balloon .form input[type="submit"]:focus {
+      outline: none;
+      border-color: #c92d00; }
   .balloon .form .submit__wrap {
     overflow: hidden; }
 
@@ -133,3 +147,13 @@ html, body {
 
 .description {
   margin: 4px 0 14px; }
+
+.cluster-balloon {
+  text-align: center; }
+  .cluster-balloon a.show-balloon {
+    display: block;
+    margin-bottom: 8px; }
+  .cluster-balloon p {
+    margin-top: 0; }
+  .cluster-balloon__date {
+    color: #999; }

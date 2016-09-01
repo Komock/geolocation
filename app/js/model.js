@@ -1,26 +1,20 @@
 'use strict';
 module.exports = {
-	addPinData: function(pinsData, lng, lat, addr, id){
+	addPinData: function(pinsData, lng, lat, addr, id, user, place, description, date){
+		console.log(user, place, description, date);
 		let pin = {
 			id: id,
 			lng: lng,
 			lat: lat,
-			addr: addr
+			addr: addr,
+			comment: {
+				user: user,
+				place: place,
+				description: description,
+				date: date
+			}
 		};
 		pinsData.push(pin);
 		sessionStorage.setItem('pins', JSON.stringify(pinsData));
-	},
-	addCommentData: function(commentsData, user, place, description, id){
-		let comment = {
-			user: user,
-			place: place,
-			description: description
-		};
-		if (commentsData[id]) {
-			commentsData[id].push(comment);
-		} else {
-			commentsData[id] = [comment];
-		}
-		sessionStorage.setItem('comments', JSON.stringify( commentsData ));
 	}
 };
